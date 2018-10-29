@@ -71,3 +71,6 @@ rd <- data.frame(D = c(0,1),
 
 
 [link to Conditions included in Qualtrics] ("https://github.com/greses/gick1983.git/gick1983/DataPilotA/Conditions_Qualtrics.doc")
+
+[link to the qualtrics survey] (https://stanforduniversity.qualtrics.com/jfe/form/SV_7PUusGpHw1ZEN01)
+
