@@ -1,0 +1,73 @@
+---
+title: 'Psych 251 Comprehension Pilot A: Gick (1983)'
+author: "Greses Perez"
+date: "October 28th, 2018"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+This is pilot A is a pilot of my study with non-naive participants. In this document, you will find: 
+
+1. The "data" collected from me and my friends to guarantee that the data is logging correctly. 
+2. The feedback on the paradigm that I got by running it several times. 
+3. The code for my planned analyses
+4. The confirmation that I can run the code on my data.
+5. The rendered replication report.
+6. The link to my paradigm. 
+7. The limited data that I collected analyzed via the confirmatory analyses.
+8. The different conditions included in the paradigm. In the case of this study, there are 6 different conditions. 
+
+
+First, let's look at the "data" collected from me and my friends to guarantee that the data is logging correctly.
+
+```{r}
+library(readr)
+d <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /PilotA/PilotA.csv")
+View(d)
+cols_condense(d)
+spec(d)
+```
+
+```{r}
+D <- transform(d, A1 = as.numeric (A1),
+               A2 = as.numeric (A2),
+               A3 = as.numeric (A3),
+               A4 = as.numeric (A4),
+               A5 = as.numeric (A5),
+               A6 = as.numeric (A6))
+sapply(D, mode)
+```
+
+```{r}
+sapply(D, class)
+```
+
+
+
+```{r}
+colnames(d)
+```
+
+
+Take a look at the data structure:
+
+```{r}
+head(d)
+```
+
+```{r}
+rd <- data.frame(D = c(0,1),
+                cond = c(A,B,C,D,E,F),
+                cond = c(1,2,3,4,5,6))
+```
+
+#### Here I am trying to organize the data and calculate the frequencies, but I have not been able to figure out the code to do so... I have come up with a way to do it modifying the original data file directly, but then I lose the purpose of this exercise which it is to try to do it in R. I need more time to figure this out. 
+
+
+[link to Conditions included in Qualtrics] ("https://github.com/greses/gick1983.git/gick1983/DataPilotA/Conditions_Qualtrics.doc")
