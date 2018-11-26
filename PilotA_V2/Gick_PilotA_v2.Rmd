@@ -1,0 +1,162 @@
+---
+title: 'Psych 251 Comprehension Pilot A: Gick (1983)'
+author: "Greses Perez"
+date: "November 25th, 2018"
+output:
+  html_document:
+    toc: yes
+    toc_float: yes
+  pdf_document:
+    toc: yes
+  word_document:
+    toc: yes
+---
+
+This is pilot A is a pilot of my study with non-naive participants. In this document, you will find: 
+
+1. The "data" collected from me and my friends to guarantee that the data is logging correctly. 
+2. The feedback on the paradigm that I got by running it several times. 
+3. The code for my planned analyses
+4. The confirmation that I can run the code on my data.
+5. The rendered replication report.
+6. The link to my paradigm. 
+7. The limited data that I collected analyzed via the confirmatory analyses.
+8. The different conditions included in the paradigm. 
+
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library(CARPSreports) # custom report functions
+
+library('dplyr')      # for data manipulation
+library('tidyr')      # for reshaping data
+library(plyr)
+
+library('ggplot2')    # plotting data
+library('scales')     # for scale_y_continuous(label = percent)
+library('ggthemes')   # for scale_fill_few('medium')
+knitr::opts_chunk$set(comment = NA)
+options(ztable.type = 'html')
+#install.packages("ez") #Uncomment and run this line if you do not have "ez" installed
+library(ez)
+library(lsr) #for ANOVA effect size calculations
+```
+
+
+1. First, let's look at the "data" collected from me and my friends to guarantee that the data is logging correctly. This was my first attempt to raw data that I collected with three samples in total. The data was logging in correctly, but I have more information than needed it for this experiment.  
+
+```{r}
+library(readr)
+rawdata <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /PilotA/Trial 2_PilotA/Data_Trial2_PilotA.csv")
+head(rawdata)
+```
+
+
+2. The feedback on the paradigm that I got by running it several times. After running the paradigm several times, the users advised me to put a break page between the stories and allow for users to click on continue when they have finished with their stories. Please see below the clean data based on the raw data presented on the previous section. 
+
+```{r}
+d <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /PilotA/Trial 2_PilotA/Table A_Data_Trial2_PilotA.csv")
+head(d)
+```
+
+
+3. The code for my planned analyses and 4. The confirmation that I can run the code on my data.
+
+```{r}
+#Total With Principle condition
+Total_WP = sum(with(d, Condition==1))
+Total_WP
+
+#Total Without Principle 
+Total_WOP = sum(with(d, Condition==2))
+Total_WOP
+```
+
+
+```{r}
+# Frequency of convergence solution with principle before hint 
+ds <- d %>%
+  filter(Condition==1 & BeforeHint==1)
+y = count(ds, 'BeforeHint')
+#Percentage of convergence solution with principle before hint 
+mutate (y, PY=((y$freq/Total_WP)*100))
+```
+
+
+```{r}
+# Frequency of convergence solution with principle after hint 
+dt <- d %>%
+  filter(Condition==1 & AfterHint==1)
+x = count(dt, 'AfterHint')-y
+#Percentage of convergence solution with principle before hint 
+mutate (x, PX=((x$freq/Total_WP)*100))
+```
+
+
+
+```{r}
+# Frequency of convergence solution without principle before hint 
+dv <- d %>%
+  filter(Condition==2 & BeforeHint==1)
+z = count(dv, 'BeforeHint')
+#Percentage of convergence solution Without principle before hint 
+mutate (z, PZ=((z$freq/Total_WOP)*100))
+```
+
+
+```{r}
+# Frequency of convergence solution without principle after hint 
+dw <- d %>%
+  filter(Condition==2 & AfterHint==1)
+a = count(dw, 'AfterHint')-z
+#Percentage of convergence solution Without principle before hint 
+mutate (a, PA=((a$freq/Total_WOP)*100))
+```
+
+
+5.a The repository folder
+
+> [Replication report could be found in GitHub folder "PilotA_V2"](https://github.com/greses/gick1983.git)
+
+5.b The rendered replication report.
+
+>[Rendered replication report](http://rpubs.com/Greses88/442889)
+
+
+6. The link to my paradigm. 
+
+> [Link to paradigm or survey data collection instrument](https://stanforduniversity.qualtrics.com/jfe/form/SV_ezc7nSOpcZjrgC9)
+
+
+7. The limited data that I collected analyzed via the confirmatory analyses.
+
+```{r}
+TAB <-matrix(c(1,1,1,0),ncol = 2, byrow = TRUE)
+colnames(TAB) <- c("Before_Hint","After_Hint")
+rownames(TAB) <- c("With_Principle", "Without_Principle")
+TAB <- as.table(TAB)
+TAB
+```
+
+```{r}
+barplot(TAB, beside = TRUE, legend=TRUE)
+```
+
+```{r}
+CHI = chisq.test(TAB, correct = T)
+CHI
+```
+
+```{r}
+attributes(CHI)
+```
+
+
+8. The different conditions included in the paradigm. 
+> There are two conditions included in the paradigm: with principle and without principle condition. A principle is a statement at the end of the stories that makes explicit the solution to the problem. In both conditions, participants are asked to solve the "Radiation Problem", first without a hint and later with a hint. 
+
+
