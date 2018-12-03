@@ -1,0 +1,247 @@
+---
+title: "Replication of “Scheme Induction and Analogical Transfer” by Gick and Holyoak (1983, Cognbitive Psychology)"
+author: "Pérez, Greses (greses@stanford.edu)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+  word_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library('scales')     # for scale_y_continuous(label = percent)
+library('ggthemes')   # for scale_fill_few('medium')
+knitr::opts_chunk$set(comment = NA)
+options(ztable.type = 'html')
+```
+
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+##Introduction
+
+  In their original paper "“Scheme Induction and Analogical Transfer”, Gick and Holyoak (1983) investigate the nature of analogical transfer between semantically distint problems.  This paper focused on “how analogies are noticed and then applied to generate solutions to novel problems.” According to Schwartz and Goldstone (2016), Gick and Holyoak’s work demonstrate a way to use analogies by providing students with at least two examples that they use to later identify the scheme.  The study participants were more likely to derive the problem scheme as an unintended result of identifying the similarities between two given analogs.  The quality of the induced scheme was highly predictive of the subsequent transfer performance.  This way of using analogies turned out to be powerful for learning and transfer.  For the purpose of this replication project, I will focus on part II of this study, specifically experiment 5.  
+  
+  My research interests lie at the intersection of engineering education and language within the context of the multilingual science classroom.  Specifically, I seek to identify opportunities for children to learn about engineering problem solving and design, without the limitations of monoglossic learning environments.  However, very little is known about how the linguistic contexts may afford or limit the construction of knowledge and meaning in science and engineering.  Although engineering has a long history both in higher education and as a profession, the recent K-12th science education standards bring the ideas and practices of engineering to the elementary and secondary levels (NRC, 2012; NGSS, 2013) .  Due to the recent inclusion of engineering in the standards, I argue that a successful implementation of the framework demands a better understanding of how we can afford opportunities for multilingual learning in K-12th science and engineering.  Contemporary research has yet to define those opportunities. It also needs to address research questions about how analogies are noticed in engineering problems and then applied to generate solutions to novel challenges, which it is similarly to Gick and Holyoak’s work.
+  This paper followed a 2X2 factorial design as participants were  exposed to two conditions in the design.  In the case of experiment 5, a total of 143 college students participated in the study.  Participants were evenly splited between two conditions, with-principle condition and without-principle condition.  The authors used “one pair of dissimilar story analogs: “The General” and “The Fire Chief.” Subjects in the without-principle condition read the two stories just as they appear in Appendix II of the article.
+  Those in the with-principle condition read the identical stories, except that the verbal statement of principle was appended as the final paragraph of each story in the following format: “(The general or the fire chief) attributed his success to an important principle: If you need a large force to accomplish some purpose, but are prevented from applying such a force directly, many smaller forces applied simultaneously from different directions may work just as well”). This statement was designed to focus the subjects’ attention on the critical aspects of the schema implicit in each of the two analogs.  
+  As part of the procedure, subjects were first told to study the two stories carefully for 5 min in preparation for answering questions about them.  The stories were then collected, and the remainder of the initial story task was done from memory.  Subjects were asked to briefly summarize each story, rate the comprehensibility of each, describe as clearly as possible the ways in which the situations in the two stories seemed similar, and rate their overall similarity. After this initial task was completed, the radiation problem was administered in the usual two-pass manner: first without a hint to use the prior story or statement, and then with such a hint. The challenges of performing this type of experiment are related to sampling and utility.
+
+[Link to the original paper](https://www.sciencedirect.com/science/article/pii/0010028583900026)
+
+[Publication in Rpubs](http://rpubs.com/Greses88/429884)
+
+[Github repository](https://github.com/greses/gick1983.git)
+
+[Link to paradigm or survey data collection instrument](https://stanforduniversity.qualtrics.com/jfe/form/SV_ezc7nSOpcZjrgC9)
+
+[Image of the MTurk Sandbox trial](https://drive.google.com/file/d/11DXsNw2eeAfL__rgcmEF3JlFJ1vEFkJJ/view?usp=sharing)
+
+[Draft of email to the author requesting feedback](https://drive.google.com/file/d/1dkFBEiELq57i0VHGR_raROUYYnIzma5e/view?usp=sharing)
+
+
+The feedback on the paradigm that I got by running it several times. After running the paradigm several times, the users advised me to put a break page between the stories and allow for users to click on continue when they have finished with their stories. Please see below the clean data based on the raw data presented on the previous section. 
+
+```{r}
+d <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /PilotA/Trial 2_PilotA/Table A_Data_Trial2_PilotA.csv")
+head(d)
+```
+
+
+##Methods
+
+###Power Analysis
+
+```{r}
+#reproduces the exact test statistic from the original article
+x <- matrix(c(45,28,28,42), nrow = 2, ncol = 2) 
+c2 <- chisq.test(x)
+DescTools::GTest(x)
+```
+
+
+```{r}
+#Original effect size for the paper
+w=sqrt(as.numeric(c2$statistic)/sum(x))
+w
+```
+
+```{r}
+# 80% power
+pwr::pwr.chisq.test(w=w, N=192, df=1)
+```
+
+
+```{r}
+# 90% power
+pwr::pwr.chisq.test(w=w, N=257, df=1)
+```
+
+```{r}
+# 95% power
+pwr::pwr.chisq.test(w=w, N=318, df=1)
+```
+
+```{r}
+# 68% is the power of the original study for experiment #5
+pwr::pwr.chisq.test(w=w, N=143, df=1)
+```
+
+The original effect size for the Gick and Holyoak (1983) paper is 0.20. The power analysis for samples to achieve 80% is a sample size of 192 participants. The power analysis for samples to achieve 90% is 257 participants, and to achieve 95% power to detect an effect size of 0.20 is 318 subjects.  The original study was under-power at 68% with 143 participants.  In light of these results and due to the resource limitations for the replication that I am attempting to complete here, the replication is going to be also under-power. 
+
+
+###Planned Sample
+
+A total of 143 subjects, college students, participated in the original experiment 5. Participants were evenly splited between the two conditions.  For the purpose of this replication project, I am considering a sample size equal to the sample size use by the authors in the original study.  The data will be collected at the begining of December 2018-2019, Fall quarter.  To be considered for this study, subjects must be currently enrolled in college.  As in the original paper, this study have participants in two different conditions, with principle and without principle. 
+
+###Materials
+
+All materials used in this experiment come from the original article and were followed precisely as indicated by the original authors.  The authors used “one pair of dissimilar story analogs: “The General” and “The Fire Chief.” Subjects served in one of two conditions. Those in the without-principle condition read the two stories just as they appear in Appendix II. Those in the with-principle condition read the identical stories, except that the verbal statement of the convergence principle, previously used in Experiment 2, was appended as the final paragraph of each (“…attributed his success to an important principle: If you need a large force to accomplish some purpose, but are prevented from applying such a force directly, many smaller forces applied simultaneously from different directions may work just as well”). The statement was worded exactly as it had been in the earlier experiment (except, of course, that the sentence for “The Fire Chief” began as following: “The fire chief attributed his success. . .“). The statement was thus designed to focus the subjects’ attention on the critical aspects of the schema implicit in each of the two analogs.
+
+Here are the stories included in the experiment: 
+
+> Radiation Problem
+"Suppose you are a doctor faced with a patient who has a malignant tumor in his stomach. It is impossible to operate on the patient, but unless the tumor is destroyed the patient will die. There is a kind of ray that can be used to destroy the tumor. If the rays reach the tumor all at once at a sufficiently high intensity, the tumor will be destroyed. Unfortunately, at this intensity the healthy tissue that the rays pass through on the way to the tumor will also be destroyed. At lower intensities the rays are harmless to healthy tissue, but they will not affect the tumor either. What type of procedure might be used to destroy the tumor with the rays, and at the same time avoid destroying the healthy tissue?"
+
+>The General
+"A small country was ruled from a strong fortress by a dictator. The fortress was situated in the middle of the country, surrounded by farms and villages. Many roads led to the fortress through the countryside. A rebel general vowed to capture the fortress. The general knew that an attack by his entire army would capture the fortress. He gathered his army at the head of one of the roads, ready to launch a full-scale direct attack. However, the general then learned that the dictator had planted mines on each of the roads. The mines were set so that small bodies of men could pass over them safely, since the dictator needed to move his troops and workers to and from the fortress. However, any large force would detonate the mines. Not only would this blow up the road, but it would also destroy many neighboring villages. It therefore seemed impossible to capture the fortress. However, the general devised a simple plan. He divided his army into small groups and dispatched each group to the head of a different road. When all was ready he gave the signal and each group marched down a different road. Each group continued down its road to the fortress so that the entire army arrived together at the fortress at the same time. In this way, the general captured the fortress and overthrew the dictator."
+
+>The Fire Chief
+"One night a fire broke out in a wood shed full of timber on Mr. Johnson’s place. As soon as he saw flames he sounded the alarm, and within minutes dozens of neighbors were on the scene armed with buckets. The shed was already burning fiercely, and everyone was afraid that if it wasn’t controlled quickly the house would go up next. Fortunately, the shed was right beside a lake, so there was plenty of water available. If a large volume of water could hit the fire at the same time, it would be extinguished. But with only small buckets to work with, it was hard to make any headway. The fire seemed to evaporate each bucket of water before it hit the wood. It looked like the house was doomed. Just then the fire chief arrived. He immediately took charge and organized everyone. He had everyone fill their bucket and then wait in a circle surrounding the burning shed. As soon as the last man was prepared, the chief gave a shout and everyone threw their bucket of water at the tire. The force of all the water together dampened the fire right down, and it was quickly brought under control, Mr. Johnson was relieved that his house was saved, and the village council voted the tire chief a raise in pay."
+
+
+###Procedure	
+
+As indicated in the introduction of this paper, participants were first told to study the two stories carefully for 5 min in preparation for answering questions about them. The stories were then collected, and the remainder of the initial story task was done from memory. Subjects were asked to briefly summarize each story, rate the comprehensibility of each, describe as clearly as possible the ways in which the situations in the two stories seemed similar, and rate their overall similarity. After this initial task was completed, the radiation problem was administered in the usual two-pass manner.
+
+> There are two conditions included in the paradigm: with principle and without principle condition. A principle is a statement at the end of the stories that makes explicit the solution to the problem. In both conditions, participants are asked to solve the "Radiation Problem", first without a hint and later with a hint. 
+
+###Analysis Plan
+
+For this replication of experiment 5, I chose to calculate the maximum likelihood chi square (G2), as done in the original experiment. I will calculate the G2 for the frequency data that compares the two conditions, with principle and without principle.  In addition, a table with the frequency data a percentage of the frequency values will be included in the analysis.
+
+###Differences from Original Study
+
+There are no specific differences in the sample size between the original study and this replication. However, instead of in-person administration of the experiment, this replication will be an experiment on Amazon Mechanical Turk (mturk.com).  This is a deviation from the original population tested in the original study. All of the other requirements for the sample population have been kept consistent in order to minimize the differences that could arise from administering the experiment online. However, differences will inevitably occur.
+
+### Methods Addendum (Post Data Collection)
+
+You can comment this section out prior to final report with data collection.
+
+#### Actual Sample
+  Sample size, demographics, data exclusions based on rules spelled out in analysis plan
+
+#### Differences from pre-data collection methods plan
+  Any differences from what was described as the original plan, or “none”.
+
+
+##Results
+
+
+### Data preparation
+
+Data preparation following the analysis plan.
+
+####Load Relevant Libraries and Functions
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+
+
+library('scales')     # for scale_y_continuous(label = percent)
+library('ggthemes')   # for scale_fill_few('medium')
+knitr::opts_chunk$set(comment = NA)
+options(ztable.type = 'html')
+```
+
+
+####Import data
+
+First, let's look at the "data" collected from me and my friends to guarantee that the data is logging correctly. This was my first attempt to raw data that I collected with three samples in total. The data was logging in correctly, but I have more information than needed it for this experiment.  
+	
+```{r}
+###Data Preparation
+library(readr)
+rawdata <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /PilotA/Trial 2_PilotA/Data_Trial2_PilotA.csv")
+rawdata
+```
+
+
+#### Data exclusion / filtering
+
+The feedback on the paradigm that I got by running it several times. After running the paradigm several times, the users advised me to put a break page between the stories and allow for users to click on continue when they have finished with their stories. Please see below the clean data based on the raw data presented on the previous section. 
+
+```{r}
+d <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /PilotA/Trial 2_PilotA/Table A_Data_Trial2_PilotA.csv")
+head(d)
+```
+
+
+#### Prepare data for analysis - create columns etc.
+
+The code for my planned analyses and the confirmation that I can run the code on my data.
+
+```{r}
+summary_table <- d %>%
+  group_by(Condition) %>%
+  summarise(beforehint_freq = sum(BeforeHint), 
+            beforehint_perc = mean(BeforeHint)*100,
+            after_freq = sum(AfterHint & !BeforeHint),
+            after_perc = mean(AfterHint & !BeforeHint),
+            notbefore_freq = n() - beforehint_freq,
+            notbefore_perc = (n() - beforehint_freq)/n())
+
+summary_table
+```
+
+
+```{r}
+contingency_table <- matrix(nrow = 2, ncol = 2, 
+                            c(summary_table$beforehint_freq[summary_table$Condition == 1],
+                              summary_table$beforehint_freq[summary_table$Condition == 2],
+                              summary_table$notbefore_freq[summary_table$Condition == 1],
+                              summary_table$notbefore_freq[summary_table$Condition == 2]))
+contingency_table
+```
+
+
+```
+
+### Confirmatory analysis
+
+The analyses as specified in the analysis plan.  
+
+*Side-by-side graph with original graph is ideal here*
+
+###Exploratory analyses
+
+Any follow-up analyses desired (not required).  
+
+## Discussion
+
+### Summary of Replication Attempt
+
+Open the discussion section with a paragraph summarizing the primary result from the confirmatory analysis and the assessment of whether it replicated, partially replicated, or failed to replicate the original result.  
+
+### Commentary
+
+Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
