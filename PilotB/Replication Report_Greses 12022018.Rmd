@@ -273,4 +273,15 @@ Open the discussion section with a paragraph summarizing the primary result from
 
 ### Commentary
 
+When contacted on December 2nd, 2018, the second author reslied the following: 
+
+"Hi Greses – the paradigm looks good to me. Maybe tweak the wording here:'Please propose a solution to “The Radiation” problem that is suggested by one or both of the prior stories, “The General” and “The Fire Chief”. (If you previously proposed a solution suggested by the stories, you can simply repeat it.)'
+
+You’ll need to score schema quality; details in original paper I think. There have been various conceptual replications (with different materials), e.g., studies by Jeff Loewenstein & Dedre Gentner on teaching negotiation strategies. Maybe check a review by Goldwater & Schalk (2016) in Psych Bulletin.
+Of course MTurk has its issues – hard to know whether people will pay attention. But scoring schema quality will give evidence as to whether or not Turkers were using their brains ☺
+
+Good luck!
+
+---Keith"
+
 Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
