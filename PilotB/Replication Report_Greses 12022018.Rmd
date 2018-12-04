@@ -206,7 +206,7 @@ summary_table <- d %>%
   summarise(beforehint_freq = sum(BeforeHint), 
             beforehint_perc = mean(BeforeHint)*100,
             after_freq = sum(AfterHint & !BeforeHint),
-            after_perc = mean(AfterHint & !BeforeHint),
+            after_perc = mean((AfterHint & !BeforeHint)*100),
             notbefore_freq = n() - beforehint_freq,
             notbefore_perc = (n() - beforehint_freq)/n())
 
@@ -215,6 +215,7 @@ summary_table
 
 
 ```{r}
+# Is this what I am going to use to calculate Chi Square? 
 contingency_table <- matrix(nrow = 2, ncol = 2, 
                             c(summary_table$beforehint_freq[summary_table$Condition == 1],
                               summary_table$beforehint_freq[summary_table$Condition == 2],
@@ -224,7 +225,35 @@ contingency_table
 ```
 
 
+```{r}
+c2.contingency.table <- chisq.test(contingency_table)
+DescTools::GTest(contingency_table)
 ```
+
+
+```{r}
+# Table clean for the graph with conditions in the x-axys and percentages in the y-axys 
+summary_table.clean <- summary_table %>% 
+  select(-beforehint_freq, -after_freq, -notbefore_freq, -notbefore_perc) 
+summary_table.clean
+```
+
+
+```{r}
+#change data to a long format 
+data.long <- gather(summary_table.clean, Factor, Percentage, beforehint_perc, after_perc)
+data.long
+```
+
+
+```{r}
+#Stacked percent plot of the conditions and the percentages in each of the radiation problem passes 
+grafica <- ggplot(data.long, aes(Condition, Percentage, fill = Factor)) +
+  geom_bar(position = "fill", stat = "identity") +
+  scale_y_continuous(labels = percent_format())
+grafica
+```
+
 
 ### Confirmatory analysis
 
