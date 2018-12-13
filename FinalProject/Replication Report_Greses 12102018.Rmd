@@ -1,0 +1,461 @@
+---
+title: "Replication of “Scheme Induction and Analogical Transfer” by Gick and Holyoak (1983, Cognbitive Psychology)"
+author: "Pérez, Greses (greses@stanford.edu)"
+date: "`r format(Sys.time(), '%B %d, %Y')`"
+output:
+  html_document:
+    toc: yes
+    toc_depth: 3
+    toc_float:
+      collapsed: no
+  pdf_document:
+    toc: yes
+    toc_depth: '3'
+  word_document:
+    toc: yes
+    toc_depth: '3'
+---
+
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+library('scales')     # for scale_y_continuous(label = percent)
+library('ggthemes')   # for scale_fill_few('medium')
+knitr::opts_chunk$set(comment = NA)
+options(ztable.type = 'html')
+```
+
+
+<!-- Replication reports should all use this template to standardize reporting across projects.  These reports will be public supplementary materials that accompany the summary report(s) of the aggregate results. -->
+
+##Introduction
+
+  In their original paper "“Scheme Induction and Analogical Transfer”, Gick and Holyoak (1983) investigate the nature of analogical transfer between semantically distint problems.  This paper focused on “how analogies are noticed and then applied to generate solutions to novel problems.” According to Schwartz and Goldstone (2016), Gick and Holyoak’s work demonstrate a way to use analogies by providing students with at least two examples that they use to later identify the scheme.  The study participants were more likely to derive the problem scheme as an unintended result of identifying the similarities between two given analogs. The quality of the induced scheme was highly predictive of the subsequent transfer performance.  This way of using analogies turned out to be powerful for learning and transfer. For the purpose of this replication project, I will focus on part II of this study, specifically experiment 5.  
+  
+  This replication paper followed a 2X2 factorial design as participants were  exposed to two conditions in the design.  In the case of experiment 5, a total of 143 college students participated in the original study. Participants were evenly splited between two conditions, with-principle condition and without-principle condition.  The authors used “one pair of dissimilar story analogs: “The General” and “The Fire Chief.” Subjects in the without-principle condition read the two stories just as they appear in Appendix II of the article. Those in the with-principle condition read the identical stories, except that the verbal statement of principle was appended as the final paragraph of each story in the following format: “(The general or the fire chief) attributed his success to an important principle: If you need a large force to accomplish some purpose, but are prevented from applying such a force directly, many smaller forces applied simultaneously from different directions may work just as well”). This statement was designed to focus the subjects’ attention on the critical aspects of the schema implicit in each of the two analogs.  
+  
+  As part of the procedure, subjects were first told to study the two stories carefully for five minutes in preparation for answering questions about them. The stories were then collected, and the remainder of the initial story task was done from memory. Subjects were asked to briefly summarize each story, rate the comprehensibility of each, describe as clearly as possible the ways in which the situations in the two stories seemed similar, and rate their overall similarity. After this initial task was completed, the radiation problem was administered in the usual two-pass manner: first without a hint to use the prior story or statement, and then with such a hint. The challenges of performing this type of experiment are related to sampling and utility.
+  
+My Positionality 
+  My research interests lie at the intersection of engineering education and language within the context of the multilingual science classroom.  Specifically, I seek to identify opportunities for children to learn about engineering problem solving and design, without the limitations of monoglossic learning environments.  However, very little is known about how the linguistic contexts may afford or limit the construction of knowledge and meaning in science and engineering.  Although engineering has a long history both in higher education and as a profession, the recent K-12th science education standards bring the ideas and practices of engineering to the elementary and secondary levels (NRC, 2012; NGSS, 2013).  Due to the recent inclusion of engineering in the standards, I argue that a successful implementation of the framework demands a better understanding of how we can afford opportunities for multilingual learning in K-12th science and engineering.  Contemporary research has yet to define those opportunities. It also needs to address research questions about how analogies are noticed in engineering problems and then applied to generate solutions to novel challenges, which it is similarly to Gick and Holyoak’s work.
+
+[Link to the original paper](https://www.sciencedirect.com/science/article/pii/0010028583900026)
+
+[Publication in Rpubs](http://rpubs.com/Greses88/449388)
+
+[Github repository](https://github.com/greses/gick1983.git)
+
+[Link to paradigm or survey data collection instrument](https://stanforduniversity.qualtrics.com/jfe/form/SV_2tRpMS9YmhQcocZ)
+
+[Image of the MTurk Sandbox trial](https://drive.google.com/file/d/11DXsNw2eeAfL__rgcmEF3JlFJ1vEFkJJ/view?usp=sharing)
+
+[Draft of email to the author requesting feedback](https://drive.google.com/file/d/1dkFBEiELq57i0VHGR_raROUYYnIzma5e/view?usp=sharing)
+
+[Pre-registration](https://osf.io/vr3dn/)
+
+
+```{r}
+#Raw data for Pilot B 
+library(readr)
+cruda <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /Final/Raw_Final_NID.csv")
+head(cruda)
+```
+
+
+After running the paradigm several times, the users' feedback suggests that I needed to put a break page between the stories and allow for users to click on continue when they have finished with reading the passages. 
+
+Please see below the clean data based on the raw data presented on the previous section. This clean data takes into account the feedback provided in the different trials.  
+
+```{r}
+d <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /Final/FinalDataClean_12072018.csv")
+head(d)
+```
+
+
+##Methods
+
+###Power Analysis
+
+The original effect size for the Gick and Holyoak (1983) paper is d=0.20. The power analysis for samples to achieve 80% is a sample size of 192 participants. The power analysis for samples to achieve 90% is 257 participants, and to achieve 95% power to detect an effect size of 0.20 is 318 subjects. The original study was under-power at 68% with 143 participants. In light of these results and due to the resource limitations for the replication that I am attempting to complete here, the replication is going to be also under-power. 
+
+
+```{r}
+#reproduces the exact test statistic from the original article
+x <- matrix(c(45,28,28,42), nrow = 2, ncol = 2) 
+c2 <- chisq.test(x)
+DescTools::GTest(x)
+```
+
+
+```{r}
+#Original effect size for the paper
+w=sqrt(as.numeric(c2$statistic)/sum(x))
+w
+```
+
+```{r}
+# 80% power
+pwr::pwr.chisq.test(w=w, N=192, df=1)
+```
+
+
+```{r}
+# 90% power
+pwr::pwr.chisq.test(w=w, N=257, df=1)
+```
+
+```{r}
+# 95% power
+pwr::pwr.chisq.test(w=w, N=318, df=1)
+```
+
+```{r}
+# 68% is the power of the original study for experiment #5
+pwr::pwr.chisq.test(w=w, N=143, df=1)
+```
+
+
+###Planned Sample
+
+A total of 143 subjects, college students, participated in the original experiment 5. Participants were evenly splited between the two conditions. For the purpose of this replication project, I considered a sample size equal to the sample size used by the authors in the original study. However, because I was not familiar with MTurk HITs, I gather a greater sample size than planned. In the final iteration of the replication, I have a sample size of 179 participants. The data was collected at the begining of December 2018, durind the fall quarter. To be considered for this replication, partipants must at least have a high school degree. As in the original paper, this study have participants in two different conditions, with principle and without principle. 
+
+###Materials
+
+All materials used in this experiment come from the original article and were followed precisely as indicated by the original authors. The authors used “one pair of dissimilar story analogs: “The General” and “The Fire Chief.” Subjects served in one of two conditions. Those in the without-principle condition read the two stories just as they appear in Appendix II. Those in the with-principle condition read the identical stories, except that the verbal statement of the convergence principle, previously used in Experiment 2, was appended as the final paragraph of each (“…attributed his success to an important principle: If you need a large force to accomplish some purpose, but are prevented from applying such a force directly, many smaller forces applied simultaneously from different directions may work just as well”). The statement was worded exactly as it had been in the earlier experiment (except, of course, that the sentence for “The Fire Chief” began as following: “The fire chief attributed his success. . .“). The statement was thus designed to focus the subjects’ attention on the critical aspects of the schema implicit in each of the two analogs.
+
+Here are the stories included in the experiment: 
+
+> Radiation Problem
+"Suppose you are a doctor faced with a patient who has a malignant tumor in his stomach. It is impossible to operate on the patient, but unless the tumor is destroyed the patient will die. There is a kind of ray that can be used to destroy the tumor. If the rays reach the tumor all at once at a sufficiently high intensity, the tumor will be destroyed. Unfortunately, at this intensity the healthy tissue that the rays pass through on the way to the tumor will also be destroyed. At lower intensities the rays are harmless to healthy tissue, but they will not affect the tumor either. What type of procedure might be used to destroy the tumor with the rays, and at the same time avoid destroying the healthy tissue?"
+
+>The General
+"A small country was ruled from a strong fortress by a dictator. The fortress was situated in the middle of the country, surrounded by farms and villages. Many roads led to the fortress through the countryside. A rebel general vowed to capture the fortress. The general knew that an attack by his entire army would capture the fortress. He gathered his army at the head of one of the roads, ready to launch a full-scale direct attack. However, the general then learned that the dictator had planted mines on each of the roads. The mines were set so that small bodies of men could pass over them safely, since the dictator needed to move his troops and workers to and from the fortress. However, any large force would detonate the mines. Not only would this blow up the road, but it would also destroy many neighboring villages. It therefore seemed impossible to capture the fortress. However, the general devised a simple plan. He divided his army into small groups and dispatched each group to the head of a different road. When all was ready he gave the signal and each group marched down a different road. Each group continued down its road to the fortress so that the entire army arrived together at the fortress at the same time. In this way, the general captured the fortress and overthrew the dictator."
+
+>The Fire Chief
+"One night a fire broke out in a wood shed full of timber on Mr. Johnson’s place. As soon as he saw flames he sounded the alarm, and within minutes dozens of neighbors were on the scene armed with buckets. The shed was already burning fiercely, and everyone was afraid that if it wasn’t controlled quickly the house would go up next. Fortunately, the shed was right beside a lake, so there was plenty of water available. If a large volume of water could hit the fire at the same time, it would be extinguished. But with only small buckets to work with, it was hard to make any headway. The fire seemed to evaporate each bucket of water before it hit the wood. It looked like the house was doomed. Just then the fire chief arrived. He immediately took charge and organized everyone. He had everyone fill their bucket and then wait in a circle surrounding the burning shed. As soon as the last man was prepared, the chief gave a shout and everyone threw their bucket of water at the tire. The force of all the water together dampened the fire right down, and it was quickly brought under control, Mr. Johnson was relieved that his house was saved, and the village council voted the tire chief a raise in pay."
+
+
+###Procedure	
+
+As indicated in the introduction of this paper, participants were first told to study the two stories carefully for five minutes in preparation for answering questions about them. The stories were then collected, and the remainder of the initial story task was done from memory. Subjects were asked to briefly summarize each story, rate the comprehensibility of each, describe as clearly as possible the ways in which the situations in the two stories seemed similar, and rate their overall similarity. After this initial task was completed, the radiation problem was administered in the usual two-pass manner.
+
+There are two conditions included in the paradigm: with principle and without principle condition. A principle is a statement at the end of the stories that makes explicit the solution to the problem. In both conditions, participants are asked to solve the "Radiation Problem", first without a hint and later with a hint. 
+
+###Analysis Plan
+
+For this replication of experiment 5, I chose to calculate the maximum likelihood chi square (G2), as done in the original experiment. I will calculate the G2 for the frequency data that compares the two conditions, with principle and without principle. In addition, a table with the frequency data a percentage of the frequency values will be included in the analysis. These frequency tables will be created for hint by condition and scheme quality by condition. 
+
+###Differences from Original Study
+
+The sample size in this replication is greater than that of the original study. Instead of in-person administration of the experiment, this replication will be an experiment on Amazon Mechanical Turk (mturk.com).  This is a deviation from the original population tested in the original study. All of the other requirements for the sample population have been kept consistent in order to minimize the differences that could arise from administering the experiment online. However, differences will inevitably occur.
+
+### Methods Addendum (Post Data Collection)
+
+No significant changes to the collection and analysis methods have been made. 
+
+#### Actual Sample
+  The sample size for this replication included 179 partipants. All of the people who responded to the MTurk HITs met the qualification of at least having a high school diploma. In the total sample, 51 participants identified as female and the rest were male.From all the participants, 80 identified as white while the rest were people of color. 5 participants identified as Black, Afro-Caribbean, or African American; 3 as Middle Eastern or Arab American; 1 person as East Asian or Asian American; 59 as South Asian or Indian Americans; 5 Latino or Hispanic Americans; and 5 Native Americans. The rest of participants identified as "other" or decline to provide race and ethnicity data. Data from participants who copy and pasted answers from online services was excluded from this replication. 
+
+#### Differences from pre-data collection methods plan
+  Other than the increase in the sample size and the switch from offline data collection to online data collection, there are no major differences from what was described as the original plan.
+
+
+##Results
+
+### Data preparation
+
+####Load Relevant Libraries and Functions
+
+```{r}
+# load packages
+library(tidyverse) # for data munging
+library(knitr) # for kable table formating
+library(haven) # import and export 'SPSS', 'Stata' and 'SAS' Files
+library(readxl) # import excel files
+
+
+
+library('scales')     # for scale_y_continuous(label = percent)
+library('ggthemes')   # for scale_fill_few('medium')
+knitr::opts_chunk$set(comment = NA)
+options(ztable.type = 'html')
+```
+
+
+####Import data
+
+First, let's look at the "data" collected from me and my friends to guarantee that the data is logging correctly. This was my first attempt to raw data that I collected with three samples in total. The data was logging in correctly, but I have more information than needed it for this experiment.  
+	
+```{r}
+###Data Preparation
+library(readr)
+rawdata <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /Final/Raw_Final_NID.csv")
+rawdata
+```
+
+
+#### Data exclusion / filtering
+
+After running the paradigm several times, the users' feedback suggests that I needed to put a break page between the stories and allow for users to click on continue when they have finished with reading the passages. 
+
+Please see below the clean data based on the raw data presented on the previous section. 
+
+```{r}
+d <- read_csv("~/Desktop/PhD Stanford /PSYCH-251 Experimental Methods/Final Project /Final/FinalDataClean_12072018.csv")
+head(d)
+d
+```
+
+
+#### Prepare data for analysis - create columns etc.
+
+The code for my planned analyses and the confirmation that I can run the code on my data.
+
+```{r}
+summary_table <- d %>%
+  group_by(Condition) %>%
+  summarise(beforehint_freq = sum(BeforeHint), 
+            beforehint_perc = round((mean(BeforeHint)*100),0),
+            after_freq = sum(AfterHint & !BeforeHint),
+            after_perc = round(mean((AfterHint & !BeforeHint)*100),0),
+            notbefore_freq = n() - beforehint_freq,
+            notbefore_perc = round((100*(n() - beforehint_freq)/n()),0))
+summary_table
+```
+
+
+```{r}
+# Is this what I am going to use to calculate Chi Square? 
+contingency_table <- matrix(nrow = 2, ncol = 2, 
+                            c(summary_table$beforehint_freq[summary_table$Condition == 1],
+                              summary_table$beforehint_freq[summary_table$Condition == 2],
+                              summary_table$notbefore_freq[summary_table$Condition == 1],
+                              summary_table$notbefore_freq[summary_table$Condition == 2]))
+contingency_table
+```
+
+
+
+```{r}
+# Table clean for the graph with conditions in the x-axys and percentages in the y-axys 
+summary_table.clean <- summary_table %>% 
+  select(-beforehint_freq, -after_freq, -notbefore_freq, -notbefore_perc) 
+summary_table.clean
+```
+
+
+```{r}
+#change data to a long format 
+data.long <- gather(summary_table.clean, Factor, Percentage, beforehint_perc, after_perc) %>%
+  mutate (Condition=factor (Condition, levels= 1:2, labels = c("With Principle", "Without Principle")))
+data.long
+```
+
+
+### Confirmatory analysis
+
+As indicated in the analysis plan, below is the Chi Square and the corresponding table.  
+
+```{r}
+#Table to calculate the Chi Square Test 
+c2.contingency.table <- chisq.test(contingency_table)
+DescTools::GTest(contingency_table)
+```
+
+
+```{r}
+#Effect size for the sample collected in MTurk
+wf=sqrt(as.numeric(c2.contingency.table$statistic)/sum(contingency_table))
+wf
+```
+
+
+There is no graph in the original paper. However, I have decided to produce the following graph to show the percentage of participants by condition that answer the "Radiation Problem" before and after the hint. 
+
+```{r}
+#Stacked percent plot of the conditions and the percentages in each of the radiation problem passes 
+grafica <- ggplot(data.long, aes(Condition, Percentage, fill = Factor)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  geom_text(aes(label= Percentage), vjust=5, 
+            color="White", size=5)+
+  theme_bw()+ theme_minimal() +
+  scale_fill_brewer(labels = c("After Hint","Before Hint"), palette = "Paired") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_rect(fill=NA, colour="gray")) +
+  ylim(0,100)
+grafica
+```
+
+
+```{r}
+dT2 <- d %>%
+  select(-Subject, -Comprehensibility, -'Radiation.WO.Hint', -'Radiation.W.Hint', -Gender, -Gender.Other, -Race, -Age)
+dT2
+```
+
+
+```{r}
+summary_table2 <-dT2 %>%
+  mutate(if (BeforeHint==1) {
+    BeforeHint
+  } else {
+    AfterHint
+  }) %>%
+  select(-BeforeHint, -AfterHint)
+summary_table2
+```
+
+
+```{r}
+Esquema <- summary_table2 %>%
+  group_by(Condition, Scheme.Quality) %>%
+summarise(sum = sum(`if (...) NULL`, na.rm = T))
+Esquema
+```
+
+```{r}
+Esquema1 <- Esquema %>%
+  spread(Scheme.Quality, sum)
+Esquema1
+```
+
+```{r}
+Esquema2 <- Esquema1 %>%
+  summarise(intermediate_freq = sum(Intermediate),
+            intermediate_perc = round((((Intermediate/(Good + Intermediate + Poor)))*100),0),
+            poor_freq = sum(Poor),
+            poor_perc = round(((Poor/(Good + Intermediate + Poor))*100),0), 
+            good_freq = sum(Good), 
+            good_perc = round(((Good/(Good + Intermediate + Poor))*100),0))
+Esquema2
+```
+
+
+###Exploratory analyses
+
+The following analysis explores if there are statistically significant differences among participants who identified with different genders. 
+
+
+```{r}
+genero <- d %>%
+  group_by(Gender)%>%
+  summarise(Before.Hint.freq = sum(BeforeHint), 
+            Before.Hint.perc = round((mean(BeforeHint)*100),0),
+            After.Hint.freq = sum(AfterHint & !BeforeHint),
+            After.Hint.perc = round(mean((AfterHint & !BeforeHint)*100),0),
+            Not.Before.freq = n() - Before.Hint.freq,
+            Not.Before.perc = round((100*(n() - Before.Hint.freq)/n()),0))
+genero
+```
+
+
+```{r}
+# Table clean for the graph with conditions in the x-axys and percentages in the y-axys 
+genero.clean <- genero %>% 
+  select(-Before.Hint.freq, -After.Hint.freq, -Not.Before.freq, -Not.Before.perc) 
+genero.clean
+```
+
+
+```{r}
+contingency_genero <- matrix(nrow = 2, ncol = 2, 
+                            c(genero$Before.Hint.freq[genero$Gender == "Male"],
+                              genero$Before.Hint.freq[genero$Gender == "Female"],
+                              genero$Not.Before.freq[genero$Gender == "Male"],
+                              genero$Not.Before.freq[genero$Gender == "Female"]))
+contingency_genero
+warning(contingency_genero)
+```
+
+
+```{r}
+c2.genero <- chisq.test(contingency_genero)
+DescTools::GTest(contingency_genero)
+```
+
+```{r}
+#Effect size for the sample collected in MTurk
+dg=sqrt(as.numeric(c2.genero$statistic)/sum(contingency_genero))
+dg
+```
+
+In the original paper, there is no graph to show the differences in responses by gender. However, I have decided to produce the following graph to show the percentage of participants by gender that answer the "Radiation Problem" before and after the hint. 
+
+```{r}
+# Table clean for the graph with conditions in the x-axys and percentages in the y-axys 
+genero.clean <- genero %>% 
+  select(-Before.Hint.freq, -After.Hint.freq, -Not.Before.freq, -Not.Before.perc) 
+genero.clean
+```
+
+
+```{r}
+#change data to a long format 
+genero.long <- gather(genero.clean, Factor, Percentage, Before.Hint.perc, After.Hint.perc) %>%
+  mutate (Gender=factor (Gender, labels = c("Female", "Male")))
+genero.long
+```
+
+
+```{r}
+#Stacked percent plot of the conditions and the percentages in each of the radiation problem passes 
+grafica.genero <- ggplot(genero.long, aes(Gender, Percentage, fill = Factor)) +
+  geom_bar(stat = "identity", width = 0.5) +
+  geom_text(aes(label= Percentage), vjust=5, 
+            color="White", size=5)+
+  theme_bw()+ theme_minimal() +
+  scale_fill_brewer(labels = c("After Hint","Before Hint"), palette = "Paired") +
+  theme(panel.grid = element_blank(),
+        panel.border = element_rect(fill=NA, colour="gray")) +
+  ylim(0,100)
+grafica.genero
+```
+
+Men did slightly better than women at transfering from a pair of analogs. However, it was not statistically significant. As shown in the table "genero", 22% of the participants who identified as female produced the convergence solution without hint, as compared to 27% of the participants who identified as male. After the hint, 16% of the females answer the problem as compared to 10% of the male. In percentages, women seem to do slighly better after receiving the hint when compare to male, but male participants perform slighly better before the hint. 
+
+The results for this gender comparisson are G2(1)=0.66278, p = 0.4156. The effect size for the replication is d=0.047. As the data described here suggests, the results are not statistically significant, so there are no significant differences by gender when it comes to answering the Radiation problem. Based on this results, I may think that the original researchers did not report results by gender because they did not found significant differences. 
+
+
+## Discussion
+
+### Summary of Replication Attempt
+
+As in the original research, the addition of the verbal statement had a clear positive impact on transfer from a pair of analogs. As shown in the table "summary_table.clean", 39% of the subjects in the with-principle condition produced the convergence solution without hint, as compared to only 14% of the participants in the without principle condition. As in Gick and Holyoak (1983), the with-principle condition maintained an advantage in total solution frequency (52% for the with-principle condition vs. 25% for the without principle condition), G2(1)=13.895, p = 0.0001934. The effect size for the replication is d=0.27 as compared to 0.20 from the original study. As the data described here suggests, the study, espciafically experiment 5, replicated the original results with even better results. This improve results are due to the increase in the sample size in the replication study. 
+
+Subjects' similarity descriptions were also scored for schema quality as suggested by the original article. As indicated in the table "Esquema2", addition of the principle had a strong influence on scheme quality. 73% of the subjects in the without-principle condition wrote poor schemas, a higher percentage than in the original study; only 18% gave good schemas. In contrast, only 14% of those in the with-principle condition produced poor schemas, whereas 49% produced schemas scored as good. These results of schema quality by condition also replicated the original study. 
+
+
+### Appendix A
+
+Feedback from authors 
+
+When contacted on December 2nd, 2018, the second author replied the following to my feedback request: 
+
+"Hi Greses – the paradigm looks good to me. Maybe tweak the wording here:'Please propose a solution to “The Radiation” problem that is suggested by one or both of the prior stories, “The General” and “The Fire Chief”. (If you previously proposed a solution suggested by the stories, you can simply repeat it.)'
+
+You’ll need to score schema quality; details in original paper I think. There have been various conceptual replications (with different materials), e.g., studies by Jeff Loewenstein & Dedre Gentner on teaching negotiation strategies. Maybe check a review by Goldwater & Schalk (2016) in Psych Bulletin.
+Of course MTurk has its issues – hard to know whether people will pay attention. But scoring schema quality will give evidence as to whether or not Turkers were using their brains ☺
+
+Good luck!
+
+---Keith"
+
+Add open-ended commentary (if any) reflecting (a) insights from follow-up exploratory analysis, (b) assessment of the meaning of the replication (or not) - e.g., for a failure to replicate, are the differences between original and present study ones that definitely, plausibly, or are unlikely to have been moderators of the result, and (c) discussion of any objections or challenges raised by the current and original authors about the replication attempt.  None of these need to be long.
+
+### Appendix B. 
+
+Comments from MTurk Participants in Pilot B
+
+From all MTurk participants in PilotB (n=7), two did not provide feedback; one complaint about lacking time and the rest (n= 4) provided positive feedback. The participant who complaint, stated: “Not enough time given to do this without stressing out”. The positive feedback included: 
+    “Thank you for giving me the opportunity to participate in this study”
+    “awesome survey”
+    “All was good, thanks”
+    “good”. 
+
+In terms of time that participants took to answer the questionnaire, the minimum time was about 7 minutes and the maximum time was about 18 minutes, with an average time of 11 minutes.
+
+
